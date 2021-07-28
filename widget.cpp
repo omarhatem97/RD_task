@@ -4,12 +4,16 @@
 #include <QLineEdit>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QColor>
+#include <QColorDialog>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    //init labels
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
     ui->nameLabel->setText("");
     ui->saveLabel->setText("");
@@ -18,6 +22,9 @@ Widget::Widget(QWidget *parent) :
     ui->pathLabel->setText("");
     ui->optionLabel->setText("");
 
+
+
+    //init data members
     encryption = false;
     file_abs_path = ""; file_name = "";  file_size = "";  file_extension ="";
 
@@ -68,18 +75,19 @@ void Widget::on_pushButton_clicked()
 {
     //check for empty lineEdit boxes
     if(ui->filePathLineEdit->text().isEmpty()){
-        ui->pathLabel->setText("Please Enter the file path!");
+        ui->pathLabel->setText("<font color='red'>Please Enter the file path!</font>");
         if(ui->lineEditPassword->text().isEmpty()){
-            ui->passwordLabel->setText("Please Enter the password!");
+            ui->passwordLabel->setText("<font color='red'>Please Enter the password!</font>");
+
         }
         if(ui->saveLineEdit->text().isEmpty()){
-            ui->saveLabel->setText("Please Enter a path!");
+            ui->saveLabel->setText("<font color='red'>Please Enter a path!</font>");
         }
         if(ui->nameLineEdit->text().isEmpty()){
-            ui->nameLabel->setText("Please Enter the name!");
+            ui->nameLabel->setText("<font color='red'>Please Enter the name!</font>");
         }
         if(option != "e" || option != "d"){
-            ui->optionLabel->setText("Please select an option!");
+            ui->optionLabel->setText("<font color='red'>Please select an option!</font>");
         }
         return;
     }
@@ -87,7 +95,7 @@ void Widget::on_pushButton_clicked()
         QString pass = ui->lineEditPassword->text();
         QString name = ui->nameLineEdit->text();
         QString q = "\""; //quotations
-        if(encryption){
+        if(option == "e"){
 
             QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -a -salt -in " +q+file_name+ q + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
             qDebug() << command;
@@ -101,10 +109,10 @@ void Widget::on_pushButton_clicked()
         }
     }
 
-    if(encryption)
-        ui->statusLabel->setText("Encrypted succefully!");
+    if(option == "e")
+        ui->statusLabel->setText("<font color='green'>Encrypted succefully!</font>");
     else
-        ui->statusLabel->setText("Decrypted succefully!");
+        ui->statusLabel->setText("<font color='green'>Decrypted succefully!</font>");
 
 }
 
