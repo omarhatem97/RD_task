@@ -21,8 +21,7 @@ Widget::Widget(QWidget *parent) :
     ui->statusLabel->setText("");
     ui->pathLabel->setText("");
     ui->optionLabel->setText("");
-
-
+    ui->detailsLabel->setText("");
 
     //init data members
     encryption = false;
@@ -39,13 +38,17 @@ void Widget::on_browseButton_clicked()
 {
     QString file_path = QFileDialog::getOpenFileName(this, "open a file", "C://");
     qDebug() << "here:" <<file_path << endl;
-    complete_file_loc = file_path;
+
     //get filename and set it
     QFileInfo fileInfo(file_path);
 
     file_name = fileInfo.fileName();
-    file_size = QString::number(fileInfo.size());
-    qDebug() << "size is: " <<file_size << endl;
+
+    double res = double(fileInfo.size()) / 1000000;
+    qDebug() << "original:" <<fileInfo.size() << "after" <<res << endl;
+    file_size = QString::number(res);
+    qDebug() << "size is: " <<QString::number(res, 'f', 6) << endl;
+    file_size = QString::number(res, 'f', 6);
 
     QDir d = fileInfo.absoluteDir();
     file_abs_path=d.absolutePath();
@@ -56,6 +59,7 @@ void Widget::on_browseButton_clicked()
     qDebug() << "extension is: " <<fileInfo.completeSuffix() << endl;
 
     ui->filePathLineEdit->setText(file_path);
+    ui->detailsLabel->setText("size: " + file_size + " MB" + "   extension: ." + file_extension);
 }
 
 void Widget::on_encryptRadioButton_toggled(bool checked)
@@ -99,7 +103,7 @@ void Widget::on_pushButton_clicked()
 
             QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -a -salt -in " +q+file_name+ q + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
             qDebug() << command;
-//            system("openssl aes-256-cbc -a -salt -in secrets.txt -out secrets.txt.enc");
+
             system(command.toStdString().c_str());
         }
         else{
@@ -119,27 +123,21 @@ void Widget::on_pushButton_clicked()
 
 void Widget::on_browseSaveButton_clicked()
 {
-//    QString file_path = QFileDialog::getOpenFileName(this, "open a file", "C://");
+
     QString file_path = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                  "C://",
                                                  QFileDialog::ShowDirsOnly
                                                  | QFileDialog::DontResolveSymlinks);
-//    qDebug() << file_path << endl;
+
 
     //get filename and set it
     QFileInfo fileInfo(file_path);
 
-//    file_name = fileInfo.fileName();
-//    file_size = QString::number(fileInfo.size());
-//    qDebug() << "size is: " <<file_size << endl;
 
     QDir d = fileInfo.absoluteDir();
     save_abs_path = d.absolutePath();
     qDebug() << "file path: " <<file_abs_path << endl;
 
-//    file_extension = fileInfo.completeSuffix();
-    QFileInfo fileInfo1(file_path);
-    qDebug() << "extension is: " <<fileInfo.completeSuffix() << endl;
 
     ui->saveLineEdit->setText(file_path);
 }

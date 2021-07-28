@@ -30,7 +30,7 @@ private:
     Ui::Widget *ui;
     bool encryption;
     QString option;
-    QString file_abs_path, file_name, file_size, file_extension, save_abs_path, save_name, complete_file_loc;
+    QString file_abs_path, file_name, file_size, file_extension, save_abs_path, save_name;
 };
 
 #endif // WIDGET_H
