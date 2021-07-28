@@ -11,6 +11,13 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEditPassword->setEchoMode(QLineEdit::Password);
+    ui->nameLabel->setText("");
+    ui->saveLabel->setText("");
+    ui->passwordLabel->setText("");
+    ui->statusLabel->setText("");
+    ui->pathLabel->setText("");
+    ui->optionLabel->setText("");
+
     encryption = false;
     file_abs_path = ""; file_name = "";  file_size = "";  file_extension ="";
 
@@ -47,13 +54,14 @@ void Widget::on_browseButton_clicked()
 void Widget::on_encryptRadioButton_toggled(bool checked)
 {
     if(checked)
-        encryption = true;
+        option = "e";
+
 }
 
 void Widget::on_decryptRadioButton_toggled(bool checked)
 {
     if(checked)
-        encryption = false;
+        option = "d";
 }
 
 void Widget::on_pushButton_clicked()
@@ -65,10 +73,13 @@ void Widget::on_pushButton_clicked()
             ui->passwordLabel->setText("Please Enter the password!");
         }
         if(ui->saveLineEdit->text().isEmpty()){
-            ui->passwordLabel->setText("Please Enter the password!");
+            ui->saveLabel->setText("Please Enter a path!");
         }
         if(ui->nameLineEdit->text().isEmpty()){
-            ui->passwordLabel->setText("Please Enter the password!");
+            ui->nameLabel->setText("Please Enter the name!");
+        }
+        if(option != "e" || option != "d"){
+            ui->optionLabel->setText("Please select an option!");
         }
         return;
     }
