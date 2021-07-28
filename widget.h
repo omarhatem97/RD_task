@@ -24,10 +24,12 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_browseSaveButton_clicked();
+
 private:
     Ui::Widget *ui;
     bool encryption;
-    QString file_abs_path, file_name, file_size, file_extension;
+    QString file_abs_path, file_name, file_size, file_extension, save_abs_path;
 };
 
 #endif // WIDGET_H
