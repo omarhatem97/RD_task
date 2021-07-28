@@ -24,8 +24,8 @@ Widget::~Widget()
 void Widget::on_browseButton_clicked()
 {
     QString file_path = QFileDialog::getOpenFileName(this, "open a file", "C://");
-    qDebug() << file_path << endl;
-
+    qDebug() << "here:" <<file_path << endl;
+    complete_file_loc = file_path;
     //get filename and set it
     QFileInfo fileInfo(file_path);
 
@@ -75,15 +75,16 @@ void Widget::on_pushButton_clicked()
     else{
         QString pass = ui->lineEditPassword->text();
         QString name = ui->nameLineEdit->text();
-
+        QString q = "\""; //quotations
         if(encryption){
-            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -a -salt -in " +file_name + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
+
+            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -a -salt -in " +q+file_name+ q + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
             qDebug() << command;
 //            system("openssl aes-256-cbc -a -salt -in secrets.txt -out secrets.txt.enc");
             system(command.toStdString().c_str());
         }
         else{
-            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -d -a -in " + file_abs_path+ file_name + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
+            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -d -a -in " + file_abs_path+q+file_name+ q + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
             qDebug() << command << endl;
             system(command.toStdString().c_str());
         }
