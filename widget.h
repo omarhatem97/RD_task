@@ -29,7 +29,7 @@ private slots:
 private:
     Ui::Widget *ui;
     bool encryption;
-    QString file_abs_path, file_name, file_size, file_extension, save_abs_path;
+    QString file_abs_path, file_name, file_size, file_extension, save_abs_path, save_name;
 };
 
 #endif // WIDGET_H

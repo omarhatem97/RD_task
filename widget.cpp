@@ -64,19 +64,26 @@ void Widget::on_pushButton_clicked()
         if(ui->lineEditPassword->text().isEmpty()){
             ui->passwordLabel->setText("Please Enter the password!");
         }
+        if(ui->saveLineEdit->text().isEmpty()){
+            ui->passwordLabel->setText("Please Enter the password!");
+        }
+        if(ui->nameLineEdit->text().isEmpty()){
+            ui->passwordLabel->setText("Please Enter the password!");
+        }
         return;
     }
     else{
         QString pass = ui->lineEditPassword->text();
-        if(encryption){
+        QString name = ui->nameLineEdit->text();
 
-            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -a -salt -in " + file_name + " -out " + file_name + ".enc" + " -k " +pass;
+        if(encryption){
+            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -a -salt -in " +file_name + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
             qDebug() << command;
 //            system("openssl aes-256-cbc -a -salt -in secrets.txt -out secrets.txt.enc");
             system(command.toStdString().c_str());
         }
         else{
-            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -d -a -in " + file_name + " -out " + "omar.txt" + " -k " +pass;
+            QString command = "cd "+ file_abs_path + " && " + "openssl aes-256-cbc -d -a -in " + file_abs_path+ file_name + " -out " + save_abs_path+name +"."+ file_extension + " -k " +pass;
             qDebug() << command << endl;
             system(command.toStdString().c_str());
         }
@@ -92,7 +99,11 @@ void Widget::on_pushButton_clicked()
 
 void Widget::on_browseSaveButton_clicked()
 {
-    QString file_path = QFileDialog::getOpenFileName(this, "open a file", "C://");
+//    QString file_path = QFileDialog::getOpenFileName(this, "open a file", "C://");
+    QString file_path = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                 "C://",
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
 //    qDebug() << file_path << endl;
 
     //get filename and set it
@@ -106,7 +117,7 @@ void Widget::on_browseSaveButton_clicked()
     save_abs_path = d.absolutePath();
     qDebug() << "file path: " <<file_abs_path << endl;
 
-    file_extension = fileInfo.completeSuffix();
+//    file_extension = fileInfo.completeSuffix();
     QFileInfo fileInfo1(file_path);
     qDebug() << "extension is: " <<fileInfo.completeSuffix() << endl;
 
