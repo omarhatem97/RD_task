@@ -34,6 +34,12 @@ HEADERS += \
 FORMS += \
         widget.ui
 
+###############add support for openssl####################
+INCLUDEPATH += ./OpenSSL-Win64/include
+
+LIBS += -L"C:\Program Files\OpenSSL-Win64\lib" -llibcrypto
+########################################################
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
